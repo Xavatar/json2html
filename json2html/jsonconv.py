@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-'''
+"""
 JSON 2 HTML convertor
 =====================
 
@@ -14,22 +14,18 @@ Contributors:
 
 LICENSE: MIT
 --------
-'''
+"""
 
 import sys
-
-if (sys.version_info[:2] < (2, 7)):
-    import simplejson as json
-else:
-    import json
+import json
 
 
 class Json2Html:
 
     def convert(self, *args, **kwargs):
-        '''
+        """
             Convert JSON to HTML Table format
-        '''
+        """
 
         # table attributes such as class, id, data-attr-*, etc.
         # eg:
@@ -56,7 +52,7 @@ class Json2Html:
         return self.iterJson(inputtedJson)
 
     def columnHeadersFromListOfDicts(self, inputtedJson):
-        '''
+        """
             If suppose some key has array of objects and all the keys are same,
             instead of creating a new row for each such entry,
             club such values, thus it makes more sense and more readable table.
@@ -78,7 +74,7 @@ class Json2Html:
                 -----------------------------
 
             @contributed by: @muellermichel
-        '''
+        """
 
         if len(inputtedJson) < 2:
             return None
@@ -98,18 +94,18 @@ class Json2Html:
         return column_headers
 
     def iterJson(self, inputtedJson):
-        '''
+        """
             Iterate over the JSON and process it
             to generate the super awesome HTML Table format
-        '''
+        """
 
         def markup(entry):
-            '''
+            """
                 Check for each value corresponding to its key
                 and return accordingly
-            '''
-            if (isinstance(entry, unicode)):
-                return unicode(entry)
+            """
+            if (isinstance(entry, str)):
+                return str(entry)
             if (isinstance(entry, int) or isinstance(entry, float)):
                 return str(entry)
             if (isinstance(entry, list) == True) and len(entry) == 0:
@@ -134,12 +130,12 @@ class Json2Html:
         convertedOutput = convertedOutput + table_init_markup
 
         try:
-            for (k, v) in inputtedJson.iteritems():
+            for (k, v) in inputtedJson.items():
                 convertedOutput = convertedOutput + '<tr>'
                 convertedOutput = convertedOutput + '<th>' + markup(k) + '</th>'
 
                 if (v is None):
-                    v = unicode("")
+                    v = str("")
                 if(isinstance(v, list)):
                     column_headers = self.columnHeadersFromListOfDicts(v)
                     if column_headers is not None:
